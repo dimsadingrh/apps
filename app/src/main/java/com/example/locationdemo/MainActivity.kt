@@ -238,6 +238,10 @@ class MainActivity : AppCompatActivity() {
                 longitude = point.longitude
                 accuracy = 5f
                 time = System.currentTimeMillis()
+                elapsedRealtimeNanos = android.os.SystemClock.elapsedRealtimeNanos()
+                altitude = 0.0
+                bearing = 0f
+                speed = 0f
             }
 
             locationManager.setTestProviderEnabled(provider, true)
