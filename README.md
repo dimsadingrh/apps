@@ -2,13 +2,18 @@
 
 Project Android native ini dibuat untuk testing dan demo internal di VS Code.
 
-## Isi project
+## Fitur
 
-- Kotlin native Android
-- Peta berbasis osmdroid
-- Tap pada map untuk memilih titik demo
-- Tombol untuk menerapkan titik demo di dalam aplikasi, tanpa mengubah GPS perangkat
-- Build dilakukan di GitHub Actions
+- Kotlin native Android dengan OSMDroid map (OpenStreetMap)
+- Tap map untuk memilih titik demo
+- GPS real-time: akses lokasi perangkat dengan indikator marker
+- Tombol kompak gaya Google Maps:
+  - ◉ Kembali ke lokasi sekarang
+  - \+ Zoom in
+  - − Zoom out
+- Tombol "Start" kecil di tengah bawah untuk menerapkan titik demo
+- Mode debug untuk testing internal tanpa mengubah GPS perangkat
+- Warning reminder untuk aktifkan "Izinkan lokasi palsu" di Developer Options
 
 ## Cara kerja
 
@@ -32,6 +37,28 @@ git push origin v1.0.0
 
 Atau trigger manual di tab "Actions" > "Release APK" > "Run workflow".
 
-## Catatan testing
+## Catatan penting: Developer Options
 
-Project ini tidak memasang Android Studio, Android SDK, atau emulator di laptop lokal. Jika kamu ingin sideload langsung ke device via USB, kamu bisa memakai platform-tools standalone di luar project ini.
+Aplikasi ini memerlukan pengaturan di device Android:
+
+1. Buka **Settings** → **About phone**
+2. Tap **Build number** 7 kali untuk unlock Developer Options
+3. Buka **Settings** → **Developer Options**
+4. Aktifkan **Select mock location app** dan pilih **Location Demo** sebagai app untuk mock location
+5. Atau cari opsi **"Izinkan lokasi palsu"** dan aktifkan untuk app ini
+
+Tanpa setting ini, fitur GPS mock tidak akan bekerja.
+
+## Instalasi APK ke device
+
+```bash
+adb install path/to/app-debug.apk
+```
+
+Pastikan device sudah terhubung USB dan USB Debugging aktif.
+
+## Permission
+
+- `INTERNET`: Untuk load map tiles
+- `ACCESS_FINE_LOCATION`: Untuk GPS presisi tinggi
+- `ACCESS_COARSE_LOCATION`: Alternatif GPS dengan presisi rendah

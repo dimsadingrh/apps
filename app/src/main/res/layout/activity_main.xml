@@ -16,67 +16,111 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/controlCard"
-        android:layout_width="0dp"
+    <LinearLayout
+        android:id="@+id/controlButtonsLayout"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        app:cardBackgroundColor="@color/location_card"
-        app:cardCornerRadius="24dp"
-        app:cardElevation="10dp"
+        android:orientation="vertical"
+        android:spacing="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/currentLocationButton"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_marginBottom="4dp"
+            android:padding="0dp"
+            android:text="◉"
+            android:textSize="18sp"
+            app:cornerRadius="22dp"
+            app:icon="@null"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/zoomInButton"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_marginBottom="4dp"
+            android:padding="0dp"
+            android:text="+"
+            android:textSize="20sp"
+            app:cornerRadius="22dp"
+            app:icon="@null"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/zoomOutButton"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:padding="0dp"
+            android:text="−"
+            android:textSize="20sp"
+            app:cornerRadius="22dp"
+            app:icon="@null"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
+        <TextView
+            android:id="@+id/warningText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:textColor="@color/location_warning"
+            android:textSize="12sp"
+            tools:text="⚠️ Developer Option Required" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/info_background"
             android:orientation="vertical"
-            android:padding="20dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/screen_title"
-                android:textColor="@color/location_text_primary"
-                android:textSize="22sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="@string/screen_subtitle"
-                android:textColor="@color/location_text_secondary"
-                android:textSize="14sp" />
+            android:padding="12dp">
 
             <TextView
                 android:id="@+id/selectedPointText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
                 android:textColor="@color/location_text_primary"
-                android:textSize="15sp"
+                android:textSize="13sp"
                 android:textStyle="bold"
-                tools:text="Titik pilihan: -6.200000, 106.816666" />
+                tools:text="-6.200000, 106.816666" />
 
             <TextView
                 android:id="@+id/statusText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="4dp"
                 android:textColor="@color/location_text_secondary"
-                android:textSize="14sp"
+                android:textSize="12sp"
                 tools:text="Tap map untuk memilih titik demo." />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/applyButton"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="18dp"
-                android:text="@string/apply_button" />
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dp"
+                android:minWidth="60dp"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:paddingTop="6dp"
+                android:paddingBottom="6dp"
+                android:text="@string/apply_button"
+                android:textSize="14sp" />
 
         </LinearLayout>
-    </com.google.android.material.card.MaterialCardView>
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
