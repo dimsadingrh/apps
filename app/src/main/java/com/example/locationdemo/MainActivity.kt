@@ -147,7 +147,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupMap() {
-        mapView.setTileSource(TileSourceFactory.OpenStreetMap.Mapnik)
+        mapView.setTileSource(TileSourceFactory.MAPNIK)
         mapView.setMultiTouchControls(true)
         mapView.controller.setZoom(14.0)
         mapView.controller.setCenter(defaultPoint)
