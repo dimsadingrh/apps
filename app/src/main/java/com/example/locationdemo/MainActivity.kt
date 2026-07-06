@@ -238,7 +238,6 @@ class MainActivity : AppCompatActivity() {
                 longitude = point.longitude
                 accuracy = 5f
                 time = System.currentTimeMillis()
-                elapsed = 0L
             }
 
             locationManager.setTestProviderEnabled(provider, true)
