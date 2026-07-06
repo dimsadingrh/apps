@@ -1,0 +1,10 @@
+<resources>
+    <color name="location_primary">#1D4ED8</color>
+    <color name="location_on_primary">#FFFFFF</color>
+    <color name="location_secondary">#0F766E</color>
+    <color name="location_on_secondary">#FFFFFF</color>
+    <color name="location_surface">#F3F6FB</color>
+    <color name="location_card">#FFFFFF</color>
+    <color name="location_text_primary">#0F172A</color>
+    <color name="location_text_secondary">#475569</color>
+</resources>

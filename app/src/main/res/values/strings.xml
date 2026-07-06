@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Location Demo</string>
+    <string name="screen_title">Location Demo</string>
+    <string name="screen_subtitle">Tap map untuk memilih titik demo. Aplikasi ini tidak mengubah GPS perangkat.</string>
+    <string name="apply_button">Terapkan titik demo</string>
+    <string name="marker_title">Titik demo terpilih</string>
+    <string name="status_ready">Siap. Pilih titik pada map untuk demo.</string>
+    <string name="status_point_selected">Titik demo diperbarui.</string>
+    <string name="status_no_point">Belum ada titik yang dipilih.</string>
+    <string name="status_applied">Titik demo diterapkan: %1$s, %2$s</string>
+    <string name="selected_point_template">Titik pilihan: %1$s, %2$s</string>
+</resources>
