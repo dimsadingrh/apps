@@ -25,8 +25,6 @@ import java.util.Locale
 class MainActivity : AppCompatActivity() {
 
     private lateinit var mapView: MapView
-    private lateinit var selectedPointText: TextView
-    private lateinit var statusText: TextView
     private lateinit var applyButton: Button
     private lateinit var currentLocationButton: Button
     private lateinit var zoomInButton: Button
@@ -39,6 +37,7 @@ class MainActivity : AppCompatActivity() {
     private var currentLocationMarker: Marker? = null
     private lateinit var locationManager: LocationManager
     private var locationListener: LocationListener? = null
+    private var isMockLocationActive = false
 
     private val defaultPoint = GeoPoint(-6.200000, 106.816666)
     private val locationPermissions = arrayOf(
@@ -54,8 +53,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         mapView = findViewById(R.id.mapView)
-        selectedPointText = findViewById(R.id.selectedPointText)
-        statusText = findViewById(R.id.statusText)
         applyButton = findViewById(R.id.applyButton)
         currentLocationButton = findViewById(R.id.currentLocationButton)
         zoomInButton = findViewById(R.id.zoomInButton)
@@ -66,7 +63,6 @@ class MainActivity : AppCompatActivity() {
         bindActions()
         requestLocationPermissions()
         setupLocationTracking()
-        updateSelection(defaultPoint, getString(R.string.status_ready))
         showWarning()
     }
 
@@ -143,7 +139,6 @@ class MainActivity : AppCompatActivity() {
     private fun onLocationUpdate(location: Location) {
         currentPoint = GeoPoint(location.latitude, location.longitude)
         updateCurrentLocationMarker()
-        statusText.text = getString(R.string.status_location_updated)
     }
 
     private fun setupMap() {
@@ -171,14 +166,18 @@ class MainActivity : AppCompatActivity() {
                 object : MapEventsReceiver {
                     override fun singleTapConfirmedHelper(p: GeoPoint?): Boolean {
                         p?.let {
-                            updateSelection(it, getString(R.string.status_point_selected))
+                            selectedPoint = it
+                            selectionMarker?.position = it
+                            mapView.invalidate()
                         }
                         return true
                     }
 
                     override fun longPressHelper(p: GeoPoint?): Boolean {
                         p?.let {
-                            updateSelection(it, getString(R.string.status_point_selected))
+                            selectedPoint = it
+                            selectionMarker?.position = it
+                            mapView.invalidate()
                         }
                         return true
                     }
@@ -189,25 +188,16 @@ class MainActivity : AppCompatActivity() {
 
     private fun bindActions() {
         applyButton.setOnClickListener {
-            val point = selectedPoint
-            if (point == null) {
-                Toast.makeText(this, R.string.status_no_point, Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
+            if (isMockLocationActive) {
+                stopMockLocation()
+            } else {
+                startMockLocation()
             }
-
-            val message = getString(
-                R.string.status_applied,
-                formatCoordinate(point.latitude),
-                formatCoordinate(point.longitude),
-            )
-            statusText.text = message
-            Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
         }
 
         currentLocationButton.setOnClickListener {
             currentPoint?.let {
                 mapView.controller.animateTo(it)
-                statusText.text = getString(R.string.status_location_updated)
             }
         }
 
@@ -220,17 +210,67 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun updateSelection(point: GeoPoint, statusMessage: String) {
-        selectedPoint = point
-        selectionMarker?.position = point
-        mapView.invalidate()
+    @SuppressLint("MissingPermission")
+    private fun startMockLocation() {
+        val point = selectedPoint
+        if (point == null) {
+            Toast.makeText(this, R.string.status_no_point, Toast.LENGTH_SHORT).show()
+            return
+        }
 
-        selectedPointText.text = getString(
-            R.string.selected_point_template,
-            formatCoordinate(point.latitude),
-            formatCoordinate(point.longitude),
-        )
-        statusText.text = statusMessage
+        try {
+            val provider = LocationManager.GPS_PROVIDER
+            locationManager.addTestProvider(
+                provider,
+                false,
+                false,
+                false,
+                false,
+                true,
+                true,
+                true,
+                1,
+                1,
+            )
+
+            val mockLocation = Location(provider).apply {
+                latitude = point.latitude
+                longitude = point.longitude
+                accuracy = 5f
+                time = System.currentTimeMillis()
+                elapsed = 0L
+            }
+
+            locationManager.setTestProviderEnabled(provider, true)
+            locationManager.setTestProviderLocation(provider, mockLocation)
+
+            isMockLocationActive = true
+            applyButton.text = "Stop"
+            val message = getString(
+                R.string.status_applied,
+                formatCoordinate(point.latitude),
+                formatCoordinate(point.longitude),
+            )
+            Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Toast.makeText(this, "Error: " + e.message, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun stopMockLocation() {
+        try {
+            val provider = LocationManager.GPS_PROVIDER
+            locationManager.setTestProviderEnabled(provider, false)
+            locationManager.removeTestProvider(provider)
+
+            isMockLocationActive = false
+            applyButton.text = getString(R.string.apply_button)
+            Toast.makeText(this, "Mock location stopped", Toast.LENGTH_SHORT).show()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
     private fun updateCurrentLocationMarker() {
